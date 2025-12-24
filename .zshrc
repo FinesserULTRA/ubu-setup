@@ -1,10 +1,9 @@
-# OK to perform console I/O before this point.
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-# From this point on, until zsh is fully initialized, console input won't work and
-# console output may appear uncolored.
-
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
@@ -78,9 +77,15 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  npm
+  nvm
+)
 source $ZSH/oh-my-zsh.sh
+export EDITOR='code -w'
 
 # User configuration
 
@@ -110,16 +115,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-CASE_SENSITIVE="true"
-# ENABLE_CORRECTION="true"
-
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-export EDITOR='code -w'
-
 # -------
 # Aliases
 # -------
@@ -145,6 +140,10 @@ mkcd() {
   mkdir -p "$1" && cd "$1";
   }
 
+# alias cat="bat"
+alias find="fd"
+alias ls="eza --icons --group-directories-first"
+alias ll="eza -lah --icons --group-directories-first"
 # -------
 # pnpm Aliases
 # -------
@@ -182,32 +181,16 @@ alias gpsho='git push -u origin'
 alias gss='git status -s'
 alias gs='echo ""; echo "*********************************************"; echo -e "   DO NOT FORGET TO PULL BEFORE COMMITTING"; echo "*********************************************"; echo ""; git status'
 
+
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/joris.van.der.burgh/Library/Application_Support/JetBrains/Toolbox/scriptseval
-# (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"')
-PATH="/usr/sbin:$PATH"
-export PNPM_HOME="/home/ultra/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+CASE_SENSITIVE="true"
+
+
+# eval "$(ssh-agent -s)"
+
 export NVM_DIR="$HOME/.nvm"
-[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/home/linuxbrew/.linuxbrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-export PATH="$PATH:/mnt/c/Users/musta/AppData/Local/Programs/Microsoft VS Code/bin"
-# Function to open files or URLs in Chrome
-chrome() {
-  if [ -e "$1" ]; then
-    local file_path
-    file_path=$(wslpath -w "$1")
-    "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" "$file_path"
-  else
-    "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" "$1"
-  fi
-}
-
-
-# Created by `pipx` on 2025-03-16 17:34:39
-export PATH="$PATH:/home/ultra/.local/bin"
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-export LIBGL_ALWAYS_INDIRECT=1
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval `dircolors /home/ultra/.dir_colors/dircolors`
